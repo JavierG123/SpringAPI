@@ -1,0 +1,73 @@
+openapi: 3.0.0
+info:
+  description: Una API simple de ejemplo.
+  title: API de Ejemplo
+  version: 1.0.0
+servers:
+- url: http://localhost:8080/api/v1
+paths:
+  /users:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/User'
+                type: array
+          description: Lista de usuarios
+      summary: Obtener todos los usuarios
+      x-accepts:
+      - application/json
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "201":
+          description: Usuario creado
+      summary: Crear un nuevo usuario
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+  /users/{id}:
+    get:
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: Usuario encontrado
+        "404":
+          description: Usuario no encontrado
+      summary: Obtener un usuario por ID
+      x-accepts:
+      - application/json
+components:
+  schemas:
+    User:
+      example:
+        name: name
+        id: id
+        email: email
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+      type: object
